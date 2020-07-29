@@ -31,7 +31,7 @@ END_MESSAGE_MAP()
 CColourMemoryDoc::CColourMemoryDoc() noexcept
 {
 	// TODO: add one-time construction code here
-
+	
 }
 
 CColourMemoryDoc::~CColourMemoryDoc()
@@ -45,6 +45,7 @@ BOOL CColourMemoryDoc::OnNewDocument()
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
+	board.SetupBoard(3, 4);
 
 	return TRUE;
 }

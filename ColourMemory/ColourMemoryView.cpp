@@ -47,7 +47,7 @@ BOOL CColourMemoryView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CColourMemoryView drawing
 
-void CColourMemoryView::OnDraw(CDC* /*pDC*/)
+void CColourMemoryView::OnDraw(CDC* pDC)
 {
 	CColourMemoryDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -55,6 +55,31 @@ void CColourMemoryView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: add draw code for native data here
+
+	int nDCSave = pDC->SaveDC();
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	COLORREF clr = pDoc->GetBoardSpace(-1, -1);
+	pDC->FillSolidRect(&rcClient, clr);
+	CBrush br;
+	br.CreateStockObject(HOLLOW_BRUSH);
+	CBrush* pbrOld = pDC->SelectObject(&br);
+
+	for (int row = 0; row < pDoc->GetRows(); row++) {
+		for (int col = 0; col < pDoc->GetColumns(); col++) {
+			clr = pDoc->GetBoardSpace(row, col);
+			CRect rcBlock;
+			rcBlock.top = row * pDoc->GetHeight();
+			rcBlock.right = rcBlock.left + pDoc->GetWidth();
+			rcBlock.bottom = rcBlock.top + pDoc->GetHeight();
+			rcBlock.left = col * pDoc->GetWidth();
+			pDC->FillSolidRect(&rcBlock, clr);
+			pDC->Rectangle(&rcBlock);
+		}
+	}
+
+	pDC->RestoreDC(nDCSave);
+	br.DeleteObject();
 }
 
 
@@ -78,5 +103,57 @@ CColourMemoryDoc* CColourMemoryView::GetDocument() const // non-debug version is
 }
 #endif //_DEBUG
 
+void CColourMemoryView::OnInitialUpdate() {
+	CView::OnInitialUpdate();
+
+	ResizeWindow();
+}
+
+void CColourMemoryView::ResizeWindow() {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	
+	if (!pDoc)
+		return;
+
+	CRect rcClient, rcWindow;
+	GetClientRect(&rcClient);
+	GetParentFrame()->GetWindowRect(&rcWindow);
+	int heightDiff = rcWindow.Height() - rcClient.Height();
+	int widthDiff = rcWindow.Width() - rcClient.Width();
+	rcWindow.right = rcWindow.left + pDoc->GetWidth() * pDoc->GetColumns() + widthDiff;
+	rcWindow.bottom = rcWindow.top + pDoc->GetHeight() * pDoc->GetRows() + heightDiff;
+
+	GetParentFrame()->MoveWindow(&rcWindow);
+}
+
+void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+
+	if (!pDoc)
+		return;
+
+	int row = point.y / pDoc->GetHeight();
+	int col = point.x / pDoc->GetWidth();
+	C = pDoc->GetBoardSpace(row, col);
+	
+	for (int r = 0; r < pDoc->GetRows(); r++) {
+		for (int c = 0; c < pDoc->GetColumns(); c++) {
+			if (pDoc->GetBoardSpace(r, c) == C) {
+				pDoc->DeleteBlocks(C);
+				Invalidate();
+				UpdateWindow();
+				if (pDoc->IsGameOver()) {
+					CString message;
+					message.Format(_T("Congratulations!"));
+					MessageBox(message, _T("Game Over"), MB_OK | MB_ICONINFORMATION);
+				}
+			}
+		}
+	}
+
+	CView::OnLButtonDown(nFlags, point);
+}
 
 // CColourMemoryView message handlers

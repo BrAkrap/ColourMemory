@@ -4,7 +4,7 @@
 
 
 #pragma once
-
+#include "GameBoard.h"
 
 class CColourMemoryDoc : public CDocument
 {
@@ -17,7 +17,16 @@ public:
 
 // Operations
 public:
-
+	COLORREF GetBoardSpace(int row, int col) { return board.GetBoardSpace(row, col); }
+	void SetupBoard(int row, int col) { board.SetupBoard(row, col); }
+	int GetHeight() { return board.GetHeight(); }
+	int GetWidth() { return board.GetWidth(); }
+	int GetRows() { return board.GetRows(); }
+	int GetColumns() { return board.GetColumns(); }
+	void DeleteBoard() { board.DeleteBoard(); }
+	void DeleteBlocks(COLORREF colour) { return board.DeleteBlocks(colour); }
+	int GetRemainingCount() { return board.GetRemainingCount(); }
+	bool IsGameOver() { return board.IsGameOver(); }
 // Overrides
 public:
 	virtual BOOL OnNewDocument();
@@ -36,7 +45,7 @@ public:
 #endif
 
 protected:
-
+	GameBoard board;
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
