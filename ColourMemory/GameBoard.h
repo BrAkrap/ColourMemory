@@ -1,4 +1,8 @@
 #pragma once
+
+#include "vector"
+
+
 class GameBoard
 {
 public:
@@ -19,7 +23,7 @@ public:
 
 private:
 	void CreateBoard();
-	int** blockOnBoard;
+	std::vector<std::vector<int>> blockOnBoard;
 	COLORREF blockColours[8];
 	int bRows;
 	int bColumns;

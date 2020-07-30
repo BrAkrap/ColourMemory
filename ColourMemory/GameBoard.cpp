@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "vector"
 #include "GameBoard.h"
 
 GameBoard::GameBoard() : blockOnBoard(NULL),
@@ -14,7 +15,6 @@ bRemaining(0)
 	blockColours[5] = RGB(255, 0, 255);
 	blockColours[6] = RGB(255, 255, 0);
 	blockColours[7] = RGB(255, 255, 255);
-	blockColours[8] = RGB(255, 255, 64);
 }
 
 GameBoard::GameBoard(int R, int C) : blockOnBoard(NULL),
@@ -30,7 +30,6 @@ bRemaining(0)
 	blockColours[5] = RGB(255, 0, 255);
 	blockColours[6] = RGB(255, 255, 0);
 	blockColours[7] = RGB(255, 255, 255);
-	blockColours[8] = RGB(255, 255, 200);
 }
 
 GameBoard::~GameBoard() {
@@ -38,11 +37,24 @@ GameBoard::~GameBoard() {
 }
 
 void GameBoard::SetupBoard(int R = 3, int C = 4) {
-	if (blockOnBoard == NULL)
+	if (blockOnBoard.empty())
 		CreateBoard();
-	for (int row = 0; row < R; row++)
-		for (int col = 0; col < C; col++)
-			blockOnBoard[row][col] = (rand() % 8) + 1;
+	std::vector<int> boardColours(R * C / 2 + 1, 0);
+	int newColour;
+	for (int row = 0; row < R; row++) {
+		for (int col = 0; col < C; col++) {
+			newColour = rand() % ((R * C) / 2);
+
+			if (boardColours[newColour] < 2)
+				boardColours[newColour]++;
+			else {
+				while (!(boardColours[newColour] < 2)) {
+					newColour = rand() % ((R * C) / 2);
+				}
+			}
+			blockOnBoard[row][col] = newColour;
+		}
+	}
 	bRemaining = R * C;
 }
 
@@ -53,24 +65,20 @@ COLORREF GameBoard::GetBoardSpace(int row, int col) {
 }
 
 void GameBoard::DeleteBoard() {
-	if (blockOnBoard != NULL) {
+	if (!blockOnBoard.empty()) {
 		for (int row = 0; row < bRows; row++) {
-			if (blockOnBoard[row] != NULL) {
-				delete[] blockOnBoard[row];
-				blockOnBoard[row] = NULL;
+			if (!blockOnBoard[row].empty()) {
+				blockOnBoard[row].clear();
 			}
 		}
-		delete[] blockOnBoard;
-		blockOnBoard = NULL;
+		blockOnBoard.clear();
 	}
 }
 
 void GameBoard::CreateBoard() {
-	if (blockOnBoard != NULL)
+	if (!blockOnBoard.empty())
 		DeleteBoard();
-	blockOnBoard = new int*[bRows];
 	for (int row = 0; row < bRows; row++) {
-		blockOnBoard[row] = new int[bColumns];
 		for (int col = 0; col < bColumns; col++)
 			blockOnBoard[row][col] = 0;
 	}
