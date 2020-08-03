@@ -2,7 +2,7 @@
 #include "vector"
 #include "GameBoard.h"
 
-GameBoard::GameBoard() : blockOnBoard(NULL),
+GameBoard::GameBoard() : blockOnBoard(),
 bRows(3), bColumns(4),
 bHeight(35), bWidth(35),
 bRemaining(0)
@@ -15,9 +15,11 @@ bRemaining(0)
 	blockColours[5] = RGB(255, 0, 255);
 	blockColours[6] = RGB(255, 255, 0);
 	blockColours[7] = RGB(255, 255, 255);
+
+	blockOnBoard.resize(3, std::vector<int>(4));
 }
 
-GameBoard::GameBoard(int R, int C) : blockOnBoard(NULL),
+GameBoard::GameBoard(int R, int C) : blockOnBoard(),
 bRows(R), bColumns(C),
 bHeight(35), bWidth(35),
 bRemaining(0)
@@ -30,6 +32,8 @@ bRemaining(0)
 	blockColours[5] = RGB(255, 0, 255);
 	blockColours[6] = RGB(255, 255, 0);
 	blockColours[7] = RGB(255, 255, 255);
+
+	blockOnBoard.resize(R, std::vector<int>(C));
 }
 
 GameBoard::~GameBoard() {
