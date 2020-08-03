@@ -24,7 +24,7 @@ public:
 private:
 	void CreateBoard();
 	std::vector<std::vector<int>> blockOnBoard;
-	COLORREF blockColours[8];
+	COLORREF blockColours[9];
 	int bRows;
 	int bColumns;
 	int bHeight;

@@ -7,14 +7,15 @@ bRows(3), bColumns(4),
 bHeight(35), bWidth(35),
 bRemaining(0)
 {
-	blockColours[0] = RGB(0, 0, 0);
-	blockColours[1] = RGB(0, 0, 255);
-	blockColours[2] = RGB(0, 255, 0);
-	blockColours[3] = RGB(0, 255, 255);
-	blockColours[4] = RGB(255, 0, 0);
-	blockColours[5] = RGB(255, 0, 255);
-	blockColours[6] = RGB(255, 255, 0);
-	blockColours[7] = RGB(255, 255, 255);
+	blockColours[0] = RGB(255, 255, 255);
+	blockColours[1] = RGB(0, 0, 0);
+	blockColours[2] = RGB(0, 0, 255);
+	blockColours[3] = RGB(0, 255, 0);
+	blockColours[4] = RGB(0, 255, 255);
+	blockColours[5] = RGB(255, 0, 0);
+	blockColours[6] = RGB(255, 0, 255);
+	blockColours[7] = RGB(255, 255, 0);
+	blockColours[8] = RGB(255, 222, 173);
 
 	blockOnBoard.resize(3, std::vector<int>(4));
 }
@@ -24,14 +25,15 @@ bRows(R), bColumns(C),
 bHeight(35), bWidth(35),
 bRemaining(0)
 {
-	blockColours[0] = RGB(0, 0, 0);
-	blockColours[1] = RGB(0, 0, 255);
-	blockColours[2] = RGB(0, 255, 0);
-	blockColours[3] = RGB(0, 255, 255);
-	blockColours[4] = RGB(255, 0, 0);
-	blockColours[5] = RGB(255, 0, 255);
-	blockColours[6] = RGB(255, 255, 0);
-	blockColours[7] = RGB(255, 255, 255);
+	blockColours[0] = RGB(255, 255, 255);
+	blockColours[1] = RGB(0, 0, 0);
+	blockColours[2] = RGB(0, 0, 255);
+	blockColours[3] = RGB(0, 255, 0);
+	blockColours[4] = RGB(0, 255, 255);
+	blockColours[5] = RGB(255, 0, 0);
+	blockColours[6] = RGB(255, 0, 255);
+	blockColours[7] = RGB(255, 255, 0);
+	blockColours[8] = RGB(255, 222, 173);
 
 	blockOnBoard.resize(R, std::vector<int>(C));
 }
@@ -43,23 +45,24 @@ GameBoard::~GameBoard() {
 void GameBoard::SetupBoard(int R = 3, int C = 4) {
 	if (blockOnBoard.empty())
 		CreateBoard();
-	std::vector<int> boardColours(R * C / 2 + 1, 0);
+	std::vector<int> boardColours(R * C / 2 + 1, 0);	// brojaè boja, samo dvije iste boje mogu biti na ploèi
 	int newColour;
 	for (int row = 0; row < R; row++) {
 		for (int col = 0; col < C; col++) {
-			newColour = rand() % ((R * C) / 2);
+			newColour = rand() % ((R * C) / 2) + 1;
 
 			if (boardColours[newColour] < 2)
 				boardColours[newColour]++;
 			else {
 				while (!(boardColours[newColour] < 2)) {
-					newColour = rand() % ((R * C) / 2);
+					newColour = rand() % ((R * C) / 2) + 1;
 				}
+				boardColours[newColour]++;
 			}
 			blockOnBoard[row][col] = newColour;
 		}
 	}
-	bRemaining = R * C;
+	bRemaining = R * C / 2;
 }
 
 COLORREF GameBoard::GetBoardSpace(int row, int col) {
@@ -84,7 +87,7 @@ void GameBoard::CreateBoard() {
 		DeleteBoard();
 	for (int row = 0; row < bRows; row++) {
 		for (int col = 0; col < bColumns; col++)
-			blockOnBoard[row][col] = 0;
+			blockOnBoard[row][col] = blockColours[0];
 	}
 }
 
@@ -92,10 +95,11 @@ void GameBoard::DeleteBlocks(COLORREF colour) {
 	for (int row = 0; row < bRows; row++) {
 		for (int col = 0; col < bColumns; col++) {
 			if (blockColours[blockOnBoard[row][col]] == colour) {
-				blockOnBoard[row][col] = 0;
+				blockOnBoard[row][col] = blockColours[1];
 			}
 		}
 	}
+	bRemaining--;
 }
 
 bool GameBoard::IsGameOver() const {
