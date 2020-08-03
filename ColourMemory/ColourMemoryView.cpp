@@ -23,6 +23,14 @@
 IMPLEMENT_DYNCREATE(CColourMemoryView, CView)
 
 BEGIN_MESSAGE_MAP(CColourMemoryView, CView)
+	ON_WM_LBUTTONDOWN()
+
+	ON_COMMAND(ID_LEVEL_EASY, &CColourMemoryView::OnLevelEasy)
+	ON_COMMAND(ID_LEVEL_MEDIUM, &CColourMemoryView::OnLevelMedium)
+	ON_COMMAND(ID_LEVEL_HARD, &CColourMemoryView::OnLevelHard)
+	ON_UPDATE_COMMAND_UI(ID_LEVEL_EASY, &CColourMemoryView::OnUpdateLevelEasy)
+	ON_UPDATE_COMMAND_UI(ID_LEVEL_MEDIUM, &CColourMemoryView::OnUpdateLevelMedium)
+	ON_UPDATE_COMMAND_UI(ID_LEVEL_HARD, &CColourMemoryView::OnUpdateLevelHard)
 END_MESSAGE_MAP()
 
 // CColourMemoryView construction/destruction
@@ -156,4 +164,63 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 	CView::OnLButtonDown(nFlags, point);
 }
 
+void CColourMemoryView::OnLevelEasy() {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pDoc->SetRows(2);
+	pDoc->SetColumns(3);
+	ResizeWindow();
+	Invalidate();
+	UpdateWindow();
+}
+
+void CColourMemoryView::OnLevelMedium() {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pDoc->SetRows(3);
+	pDoc->SetColumns(4);
+	ResizeWindow();
+	Invalidate();
+	UpdateWindow();
+}
+
+void CColourMemoryView::OnLevelHard() {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pDoc->SetRows(4);
+	pDoc->SetColumns(4);
+	ResizeWindow();
+	Invalidate();
+	UpdateWindow();
+}
+
+void CColourMemoryView::OnUpdateLevelEasy(CCmdUI *pCmdUI) {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pCmdUI->SetCheck(pDoc->GetRows() == 2 && pDoc->GetColumns() == 3);
+}
+
+void CColourMemoryView::OnUpdateLevelMedium(CCmdUI *pCmdUI) {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pCmdUI->SetCheck(pDoc->GetRows() == 3 && pDoc->GetColumns() == 4);
+}
+
+void CColourMemoryView::OnUpdateLevelHard(CCmdUI *pCmdUI) {
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	pCmdUI->SetCheck(pDoc->GetRows() == 4 && pDoc->GetColumns() == 4);
+}
 // CColourMemoryView message handlers

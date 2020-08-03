@@ -20,9 +20,13 @@ public:
 	COLORREF GetBoardSpace(int row, int col) { return board.GetBoardSpace(row, col); }
 	void SetupBoard(int row, int col) { board.SetupBoard(row, col); }
 	int GetHeight() { return board.GetHeight(); }
+	void SetHeight(int h) { board.SetHeight(h); }
 	int GetWidth() { return board.GetWidth(); }
+	void SetWidth(int w) { board.SetWidth(w); }
 	int GetRows() { return board.GetRows(); }
+	void SetRows(int row) { board.SetRows(row); }
 	int GetColumns() { return board.GetColumns(); }
+	void SetColumns(int col) { board.SetColumns(col); }
 	void DeleteBoard() { board.DeleteBoard(); }
 	void DeleteBlocks(COLORREF colour) { return board.DeleteBlocks(colour); }
 	int GetRemainingCount() { return board.GetRemainingCount(); }

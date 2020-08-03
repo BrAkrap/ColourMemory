@@ -42,6 +42,12 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLevelEasy();
+	afx_msg void OnLevelMedium();
+	afx_msg void OnLevelHard();
+	afx_msg void OnUpdateLevelEasy(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateLevelMedium(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateLevelHard(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in ColourMemoryView.cpp

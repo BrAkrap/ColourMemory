@@ -18,6 +18,7 @@ bRemaining(0)
 	blockColours[8] = RGB(255, 222, 173);
 
 	blockOnBoard.resize(3, std::vector<int>(4));
+	SetupBoard(3, 4);
 }
 
 GameBoard::GameBoard(int R, int C) : blockOnBoard(),
@@ -36,6 +37,7 @@ bRemaining(0)
 	blockColours[8] = RGB(255, 222, 173);
 
 	blockOnBoard.resize(R, std::vector<int>(C));
+	SetupBoard(R, C);
 }
 
 GameBoard::~GameBoard() {
@@ -59,7 +61,7 @@ void GameBoard::SetupBoard(int R = 3, int C = 4) {
 				}
 				boardColours[newColour]++;
 			}
-			blockOnBoard[row][col] = newColour;
+			blockOnBoard[row][col] = newColour;	// blockColours[newColour]
 		}
 	}
 	bRemaining = R * C / 2;
