@@ -173,6 +173,7 @@ void CColourMemoryView::OnLevelEasy() {
 		return;
 	pDoc->SetRows(2);
 	pDoc->SetColumns(3);
+	pDoc->SetupBoard(2, 3);
 	ResizeWindow();
 	Invalidate();
 	UpdateWindow();
@@ -185,6 +186,7 @@ void CColourMemoryView::OnLevelMedium() {
 		return;
 	pDoc->SetRows(3);
 	pDoc->SetColumns(4);
+	pDoc->SetupBoard(3, 4);
 	ResizeWindow();
 	Invalidate();
 	UpdateWindow();
@@ -197,6 +199,7 @@ void CColourMemoryView::OnLevelHard() {
 		return;
 	pDoc->SetRows(4);
 	pDoc->SetColumns(4);
+	pDoc->SetupBoard(4, 4);
 	ResizeWindow();
 	Invalidate();
 	UpdateWindow();
