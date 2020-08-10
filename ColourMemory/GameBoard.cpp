@@ -4,7 +4,7 @@
 
 GameBoard::GameBoard() : blockOnBoard(),
 bRows(3), bColumns(4),
-bHeight(35), bWidth(35),
+bHeight(50), bWidth(50),
 bRemaining(0)
 {
 	blockColours[0] = RGB(255, 255, 255);
@@ -23,7 +23,7 @@ bRemaining(0)
 
 GameBoard::GameBoard(int R, int C) : blockOnBoard(),
 bRows(R), bColumns(C),
-bHeight(35), bWidth(35),
+bHeight(50), bWidth(50),
 bRemaining(0)
 {
 	blockColours[0] = RGB(255, 255, 255);
