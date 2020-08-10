@@ -125,3 +125,7 @@ bool GameBoard::IsGameOver() const {
 
 	return true;
 }
+
+void GameBoard::SetRemainingCount(int remaining) {
+	this->bRemaining = remaining;
+}

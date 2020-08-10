@@ -171,8 +171,8 @@ void CColourMemoryView::OnLevelEasy() {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	pDoc->SetRows(2);
-	pDoc->SetColumns(3);
+	GameBoard(2, 3);
+	pDoc->SetRemainingCount(3);
 	pDoc->SetupBoard(2, 3);
 	ResizeWindow();
 	Invalidate();
@@ -184,8 +184,8 @@ void CColourMemoryView::OnLevelMedium() {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	pDoc->SetRows(3);
-	pDoc->SetColumns(4);
+	GameBoard(3, 4);
+	pDoc->SetRemainingCount(6);
 	pDoc->SetupBoard(3, 4);
 	ResizeWindow();
 	Invalidate();
@@ -197,8 +197,8 @@ void CColourMemoryView::OnLevelHard() {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	pDoc->SetRows(4);
-	pDoc->SetColumns(4);
+	GameBoard(4, 4);
+	pDoc->SetRemainingCount(8);
 	pDoc->SetupBoard(4, 4);
 	ResizeWindow();
 	Invalidate();

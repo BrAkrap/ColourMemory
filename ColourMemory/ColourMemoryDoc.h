@@ -29,6 +29,7 @@ public:
 	void SetColumns(int col) { board.SetColumns(col); }
 	void DeleteBoard() { board.DeleteBoard(); }
 	void DeleteBlocks(COLORREF colour) { return board.DeleteBlocks(colour); }
+	void SetRemainingCount(int remaining) { return board.SetRemainingCount(remaining); }
 	int GetRemainingCount() { return board.GetRemainingCount(); }
 	bool IsGameOver() { return board.IsGameOver(); }
 // Overrides

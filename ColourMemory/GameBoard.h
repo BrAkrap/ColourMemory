@@ -22,6 +22,7 @@ public:
 	void SetColumns(int col) { bColumns = (col >= 3 && col <= 4) ? col : 4; }
 	void DeleteBoard();
 	void DeleteBlocks(COLORREF colour);
+	void SetRemainingCount(int remaining);
 	int GetRemainingCount() const { return bRemaining; }
 	bool IsGameOver() const;
 
