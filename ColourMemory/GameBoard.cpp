@@ -45,8 +45,12 @@ GameBoard::~GameBoard() {
 }
 
 void GameBoard::SetupBoard(int R = 3, int C = 4) {
+	SetRows(R);
+	SetColumns(C);
+	
 	if (blockOnBoard.empty())
 		CreateBoard();
+
 	std::vector<int> boardColours(R * C / 2 + 1, 0);	// brojaè boja, samo dvije iste boje mogu biti na ploèi
 	int newColour;
 	for (int row = 0; row < R; row++) {
@@ -61,7 +65,7 @@ void GameBoard::SetupBoard(int R = 3, int C = 4) {
 				}
 				boardColours[newColour]++;
 			}
-			blockOnBoard[row][col] = newColour;	// blockColours[newColour]
+			blockOnBoard[row][col] = newColour;
 		}
 	}
 	bRemaining = R * C / 2;

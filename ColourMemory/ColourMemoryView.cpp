@@ -77,10 +77,12 @@ void CColourMemoryView::OnDraw(CDC* pDC)
 		for (int col = 0; col < pDoc->GetColumns(); col++) {
 			clr = pDoc->GetBoardSpace(row, col);
 			CRect rcBlock;
+
+			rcBlock.left = col * pDoc->GetWidth();
 			rcBlock.top = row * pDoc->GetHeight();
 			rcBlock.right = rcBlock.left + pDoc->GetWidth();
 			rcBlock.bottom = rcBlock.top + pDoc->GetHeight();
-			rcBlock.left = col * pDoc->GetWidth();
+			
 			pDC->FillSolidRect(&rcBlock, clr);
 			pDC->Rectangle(&rcBlock);
 		}
