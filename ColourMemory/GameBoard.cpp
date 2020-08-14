@@ -17,7 +17,7 @@ bRemaining(0)
 	blockColours[7] = RGB(255, 255, 0);
 	blockColours[8] = RGB(255, 222, 173);
 
-	blockOnBoard.resize(3, std::vector<int>(4));
+	//blockOnBoard.resize(3, std::vector<int>(4));
 	SetupBoard(3, 4);
 }
 
@@ -36,7 +36,7 @@ bRemaining(0)
 	blockColours[7] = RGB(255, 255, 0);
 	blockColours[8] = RGB(255, 222, 173);
 
-	blockOnBoard.resize(R, std::vector<int>(C));
+	//blockOnBoard.resize(R, std::vector<int>(C));
 	SetupBoard(R, C);
 }
 
@@ -47,6 +47,7 @@ GameBoard::~GameBoard() {
 void GameBoard::SetupBoard(int R = 3, int C = 4) {
 	SetRows(R);
 	SetColumns(C);
+	blockOnBoard.resize(R, std::vector<int>(C));
 	
 	if (blockOnBoard.empty())
 		CreateBoard();
@@ -109,21 +110,9 @@ void GameBoard::DeleteBlocks(COLORREF colour) {
 }
 
 bool GameBoard::IsGameOver() const {
-	for (int col = 0; col < bColumns; col++) {
-		for (int row = bRows - 1; row >= 0; row--) {
-			int bColour = blockOnBoard[row][col];
-			if (bColour == 0)
-				break;
-			else {
-				if (row - 1 >= 0 && blockOnBoard[row - 1][col] == bColour)
-					return false;
-				else if (col + 1 < bColumns && blockOnBoard[row][col + 1] == bColour)
-					return false;
-			}
-		}
-	}
-
-	return true;
+	if (bRemaining == 0)
+		return true;
+	return false;
 }
 
 void GameBoard::SetRemainingCount(int remaining) {
