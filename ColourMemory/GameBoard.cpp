@@ -106,6 +106,8 @@ void GameBoard::DeleteBlocks(COLORREF colour) {
 			}
 		}
 	}
+	if (colour == RGB(255, 255, 255))
+		return;
 	bRemaining--;
 }
 
