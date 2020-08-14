@@ -27,6 +27,12 @@ public:
 	void SetRows(int row) { board.SetRows(row); }
 	int GetColumns() { return board.GetColumns(); }
 	void SetColumns(int col) { board.SetColumns(col); }
+	COLORREF GetPreviousColour() { return board.GetPreviousColour(); }
+	void SetPreviousColour(COLORREF colour) { board.SetPreviousColour(colour); }
+	CPoint GetPreviousPoint() { return board.GetPreviousPoint(); }
+	void SetPreviousPoint(CPoint point) { board.SetPreviousPoint(point); }
+	bool GetSecondChoice() { return board.GetSecondChoice(); }
+	void SetSecondChoice(bool choice) { board.SetSecondChoice(choice); }
 	void DeleteBoard() { board.DeleteBoard(); }
 	void DeleteBlocks(COLORREF colour) { return board.DeleteBlocks(colour); }
 	void SetRemainingCount(int remaining) { return board.SetRemainingCount(remaining); }

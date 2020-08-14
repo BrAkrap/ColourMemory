@@ -55,6 +55,38 @@ BOOL CColourMemoryView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CColourMemoryView drawing
 
+/*void CColourMemoryView::ShowRectangle(int row, int col) {
+	CClientDC* pDC;
+	CColourMemoryDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	
+	if (!pDoc)
+		return;
+	
+	int nDCSave = pDC->SaveDC();
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	COLORREF clr = pDoc->GetBoardSpace(-1, -1);
+	pDC->FillSolidRect(&rcClient, clr);
+	CBrush br;
+	br.CreateStockObject(HOLLOW_BRUSH);
+	CBrush* pbrOld = pDC->SelectObject(&br);
+
+	clr = pDoc->GetBoardSpace(row, col);
+	CRect rcBlock;
+
+	rcBlock.left = col * pDoc->GetWidth();
+	rcBlock.top = row * pDoc->GetHeight();
+	rcBlock.right = rcBlock.left + pDoc->GetWidth();
+	rcBlock.bottom = rcBlock.top + pDoc->GetHeight();
+
+	pDC->FillSolidRect(&rcBlock, clr);
+	pDC->Rectangle(&rcBlock);
+
+	pDC->RestoreDC(nDCSave);
+	br.DeleteObject();
+}*/
+
 void CColourMemoryView::OnDraw(CDC* pDC)
 {
 	CColourMemoryDoc* pDoc = GetDocument();
@@ -84,6 +116,7 @@ void CColourMemoryView::OnDraw(CDC* pDC)
 			rcBlock.bottom = rcBlock.top + pDoc->GetHeight();
 			
 			pDC->FillSolidRect(&rcBlock, clr);
+			//pDC->FillSolidRect(&rcBlock, RGB(192, 192, 192));
 			pDC->Rectangle(&rcBlock);
 		}
 	}
@@ -146,21 +179,26 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 
 	int row = point.y / pDoc->GetHeight();
 	int col = point.x / pDoc->GetWidth();
-	C = pDoc->GetBoardSpace(row, col);
+	COLORREF C = pDoc->GetBoardSpace(row, col);
 	
-	for (int r = 0; r < pDoc->GetRows(); r++) {
-		for (int c = 0; c < pDoc->GetColumns(); c++) {
-			if (pDoc->GetBoardSpace(r, c) == C) {
-				pDoc->DeleteBlocks(C);
-				Invalidate();
-				UpdateWindow();
-				if (pDoc->IsGameOver()) {
-					CString message;
-					message.Format(_T("Congratulations!"));
-					MessageBox(message, _T("Game Over"), MB_OK | MB_ICONINFORMATION);
-				}
+	if (pDoc->GetSecondChoice() == false) {
+		//CColourMemoryView::ShowRectangle(row, col);
+		pDoc->SetPreviousPoint(point);
+		pDoc->SetPreviousColour(C);
+		pDoc->SetSecondChoice(true);
+	}
+	else {
+		if (pDoc->GetBoardSpace(row, col) == pDoc->GetPreviousColour() && (row != (pDoc->GetPreviousPoint().y / pDoc->GetHeight()) || col != (pDoc->GetPreviousPoint().x / pDoc->GetWidth()))) {
+			pDoc->DeleteBlocks(C);
+			Invalidate();
+			UpdateWindow();
+			if (pDoc->IsGameOver()) {
+				CString message;
+				message.Format(_T("Congratulations!"));
+				MessageBox(message, _T("Game Over"), MB_OK | MB_ICONINFORMATION);
 			}
 		}
+		pDoc->SetSecondChoice(false);
 	}
 
 	CView::OnLButtonDown(nFlags, point);
