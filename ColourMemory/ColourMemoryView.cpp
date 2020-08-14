@@ -55,38 +55,6 @@ BOOL CColourMemoryView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CColourMemoryView drawing
 
-/*void CColourMemoryView::ShowRectangle(int row, int col) {
-	CClientDC* pDC;
-	CColourMemoryDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	
-	if (!pDoc)
-		return;
-	
-	int nDCSave = pDC->SaveDC();
-	CRect rcClient;
-	GetClientRect(&rcClient);
-	COLORREF clr = pDoc->GetBoardSpace(-1, -1);
-	pDC->FillSolidRect(&rcClient, clr);
-	CBrush br;
-	br.CreateStockObject(HOLLOW_BRUSH);
-	CBrush* pbrOld = pDC->SelectObject(&br);
-
-	clr = pDoc->GetBoardSpace(row, col);
-	CRect rcBlock;
-
-	rcBlock.left = col * pDoc->GetWidth();
-	rcBlock.top = row * pDoc->GetHeight();
-	rcBlock.right = rcBlock.left + pDoc->GetWidth();
-	rcBlock.bottom = rcBlock.top + pDoc->GetHeight();
-
-	pDC->FillSolidRect(&rcBlock, clr);
-	pDC->Rectangle(&rcBlock);
-
-	pDC->RestoreDC(nDCSave);
-	br.DeleteObject();
-}*/
-
 void CColourMemoryView::OnDraw(CDC* pDC)
 {
 	CColourMemoryDoc* pDoc = GetDocument();
@@ -114,12 +82,25 @@ void CColourMemoryView::OnDraw(CDC* pDC)
 			rcBlock.top = row * pDoc->GetHeight();
 			rcBlock.right = rcBlock.left + pDoc->GetWidth();
 			rcBlock.bottom = rcBlock.top + pDoc->GetHeight();
-			
-			pDC->FillSolidRect(&rcBlock, clr);
-			//pDC->FillSolidRect(&rcBlock, RGB(192, 192, 192));
+
+			if (pDoc->GetAction() == true && pDoc->GetCurrentPoint() == CPoint(row, col)) {
+				pDC->FillSolidRect(&rcBlock, clr);
+				
+				rcBlock.left = pDoc->GetPreviousPoint().y * pDoc->GetWidth();
+				rcBlock.top = pDoc->GetPreviousPoint().x * pDoc->GetHeight();
+				rcBlock.right = rcBlock.left + pDoc->GetWidth();
+				rcBlock.bottom = rcBlock.top + pDoc->GetHeight();
+
+				pDC->FillSolidRect(&rcBlock, pDoc->GetPreviousColour());
+			}
+			else if (pDoc->GetAction() == true && pDoc->GetBoardSpace(row, col) == RGB(255, 255, 255))
+				pDC->FillSolidRect(&rcBlock, RGB(255, 255, 255));
+			else
+				pDC->FillSolidRect(&rcBlock, RGB(192, 192, 192));
 			pDC->Rectangle(&rcBlock);
 		}
 	}
+
 
 	pDC->RestoreDC(nDCSave);
 	br.DeleteObject();
@@ -177,18 +158,22 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 	if (!pDoc)
 		return;
 
+	pDoc->SetAction(true);
+
 	int row = point.y / pDoc->GetHeight();
 	int col = point.x / pDoc->GetWidth();
+	pDoc->SetCurrentPoint(CPoint(row, col));
 	COLORREF C = pDoc->GetBoardSpace(row, col);
 	
 	if (pDoc->GetSecondChoice() == false) {
-		//CColourMemoryView::ShowRectangle(row, col);
 		pDoc->SetPreviousPoint(point);
 		pDoc->SetPreviousColour(C);
 		pDoc->SetSecondChoice(true);
+		Invalidate();
 	}
 	else {
 		if (pDoc->GetBoardSpace(row, col) == pDoc->GetPreviousColour() && (row != (pDoc->GetPreviousPoint().y / pDoc->GetHeight()) || col != (pDoc->GetPreviousPoint().x / pDoc->GetWidth()))) {
+			Invalidate();
 			pDoc->DeleteBlocks(C);
 			Invalidate();
 			UpdateWindow();
@@ -198,7 +183,10 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 				MessageBox(message, _T("Game Over"), MB_OK | MB_ICONINFORMATION);
 			}
 		}
+		pDoc->SetPreviousPoint(CPoint(row, col));
+		pDoc->SetPreviousColour(C);
 		pDoc->SetSecondChoice(false);
+		Invalidate();
 	}
 
 	CView::OnLButtonDown(nFlags, point);

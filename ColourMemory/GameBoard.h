@@ -24,8 +24,12 @@ public:
 	void SetPreviousColour(COLORREF colour) { previousColour = colour; }
 	CPoint GetPreviousPoint() { return previousPoint; }
 	void SetPreviousPoint(CPoint point) { previousPoint = point; }
+	CPoint GetCurrentPoint() { return currentPoint; }
+	void SetCurrentPoint(CPoint point) { currentPoint = point; }
 	bool GetSecondChoice() { return secondChoice; }
 	void SetSecondChoice(bool choice) { secondChoice = choice; }
+	bool GetAction() { return action; }
+	void SetAction(bool action) { this->action = action; }
 	void DeleteBoard();
 	void DeleteBlocks(COLORREF colour);
 	void SetRemainingCount(int remaining);
@@ -39,6 +43,8 @@ private:
 	COLORREF previousColour;
 	CPoint previousPoint;
 	bool secondChoice = false;
+	bool action = false;
+	CPoint currentPoint;
 	int bRows;
 	int bColumns;
 	int bHeight;

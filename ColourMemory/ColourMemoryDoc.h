@@ -31,8 +31,12 @@ public:
 	void SetPreviousColour(COLORREF colour) { board.SetPreviousColour(colour); }
 	CPoint GetPreviousPoint() { return board.GetPreviousPoint(); }
 	void SetPreviousPoint(CPoint point) { board.SetPreviousPoint(point); }
+	CPoint GetCurrentPoint() { return board.GetCurrentPoint(); }
+	void SetCurrentPoint(CPoint point) { board.SetCurrentPoint(point); }
 	bool GetSecondChoice() { return board.GetSecondChoice(); }
 	void SetSecondChoice(bool choice) { board.SetSecondChoice(choice); }
+	bool GetAction() { return board.GetAction(); }
+	void SetAction(bool action) { board.SetAction(action); }
 	void DeleteBoard() { board.DeleteBoard(); }
 	void DeleteBlocks(COLORREF colour) { return board.DeleteBlocks(colour); }
 	void SetRemainingCount(int remaining) { return board.SetRemainingCount(remaining); }
