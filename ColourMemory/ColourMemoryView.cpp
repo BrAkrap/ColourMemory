@@ -163,9 +163,8 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 	int row = point.y / pDoc->GetHeight();
 	int col = point.x / pDoc->GetWidth();
 
-	if (row == pDoc->GetPreviousPoint().y / pDoc->GetHeight() && col == pDoc->GetPreviousPoint().x / pDoc->GetWidth() && pDoc->GetSecondChoice() == true) {
-		pDoc->SetCurrentPoint(pDoc->GetPreviousPoint());
-		pDoc->SetCurrentColour(pDoc->GetPreviousColour());
+	if ((row == pDoc->GetPreviousPoint().y / pDoc->GetHeight() && col == pDoc->GetPreviousPoint().x / pDoc->GetWidth()) && pDoc->GetSecondChoice() == true) {
+		return;
 	}
 	else {
 		pDoc->SetCurrentPoint(CPoint(row, col));
