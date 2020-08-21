@@ -85,7 +85,7 @@ void CColourMemoryView::OnDraw(CDC* pDC)
 
 			if (pDoc->GetAction() == true && pDoc->GetCurrentPoint() == CPoint(row, col)) {
 				pDC->FillSolidRect(&rcBlock, clr);
-				
+
 				rcBlock.left = pDoc->GetPreviousPoint().y * pDoc->GetWidth();
 				rcBlock.top = pDoc->GetPreviousPoint().x * pDoc->GetHeight();
 				rcBlock.right = rcBlock.left + pDoc->GetWidth();
@@ -175,12 +175,15 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 		if (pDoc->GetBoardSpace(row, col) == pDoc->GetPreviousColour() && (row != (pDoc->GetPreviousPoint().y / pDoc->GetHeight()) || col != (pDoc->GetPreviousPoint().x / pDoc->GetWidth()))) {
 			Invalidate();
 			pDoc->DeleteBlocks(C);
+			//blockColours[blockOnBoard[row, col]] = RGB(255, 255, 255);
 			Invalidate();
 			UpdateWindow();
 			if (pDoc->IsGameOver()) {
 				CString message;
 				message.Format(_T("Congratulations!"));
 				MessageBox(message, _T("Game Over"), MB_OK | MB_ICONINFORMATION);
+				pDoc->SetAction(false);
+				pDoc->SetupBoard(pDoc->GetRows(), pDoc->GetColumns());
 			}
 		}
 		pDoc->SetPreviousPoint(CPoint(row, col));
@@ -197,7 +200,6 @@ void CColourMemoryView::OnLevelEasy() {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	GameBoard(2, 3);
 	pDoc->SetRemainingCount(3);
 	pDoc->SetupBoard(2, 3);
 	ResizeWindow();
@@ -210,7 +212,6 @@ void CColourMemoryView::OnLevelMedium() {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	GameBoard(3, 4);
 	pDoc->SetRemainingCount(6);
 	pDoc->SetupBoard(3, 4);
 	ResizeWindow();
@@ -223,7 +224,6 @@ void CColourMemoryView::OnLevelHard() {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	GameBoard(4, 4);
 	pDoc->SetRemainingCount(8);
 	pDoc->SetupBoard(4, 4);
 	ResizeWindow();
@@ -252,6 +252,6 @@ void CColourMemoryView::OnUpdateLevelHard(CCmdUI *pCmdUI) {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	pCmdUI->SetCheck(pDoc->GetRows() == 4 && pDoc->GetColumns() == 4);
+	pCmdUI->SetCheck(pDoc->GetRows() == 4 && pDoc->GetColumns() == 4);	
 }
 // CColourMemoryView message handlers
