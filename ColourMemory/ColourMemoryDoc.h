@@ -33,6 +33,8 @@ public:
 	void SetPreviousPoint(CPoint point) { board.SetPreviousPoint(point); }
 	CPoint GetCurrentPoint() { return board.GetCurrentPoint(); }
 	void SetCurrentPoint(CPoint point) { board.SetCurrentPoint(point); }
+	COLORREF GetCurrentColour() { return board.GetCurrentColour(); }
+	void SetCurrentColour(COLORREF colour) { board.SetCurrentColour(colour); }
 	bool GetSecondChoice() { return board.GetSecondChoice(); }
 	void SetSecondChoice(bool choice) { board.SetSecondChoice(choice); }
 	bool GetAction() { return board.GetAction(); }

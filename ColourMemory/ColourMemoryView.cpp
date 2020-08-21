@@ -163,21 +163,20 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 	int row = point.y / pDoc->GetHeight();
 	int col = point.x / pDoc->GetWidth();
 	pDoc->SetCurrentPoint(CPoint(row, col));
-	COLORREF C = pDoc->GetBoardSpace(row, col);
-	
+	pDoc->SetCurrentColour(pDoc->GetBoardSpace(row, col));
+
 	if (pDoc->GetSecondChoice() == false) {
 		pDoc->SetPreviousPoint(point);
-		pDoc->SetPreviousColour(C);
+		pDoc->SetPreviousColour(pDoc->GetCurrentColour());
 		pDoc->SetSecondChoice(true);
 		Invalidate();
 	}
 	else {
 		if (pDoc->GetBoardSpace(row, col) == pDoc->GetPreviousColour() && (row != (pDoc->GetPreviousPoint().y / pDoc->GetHeight()) || col != (pDoc->GetPreviousPoint().x / pDoc->GetWidth()))) {
-			Invalidate();
-			pDoc->DeleteBlocks(C);
-			//blockColours[blockOnBoard[row, col]] = RGB(255, 255, 255);
-			Invalidate();
+			
+			pDoc->DeleteBlocks(pDoc->GetCurrentColour());
 			UpdateWindow();
+			Invalidate();
 			if (pDoc->IsGameOver()) {
 				CString message;
 				message.Format(_T("Congratulations!"));
@@ -186,12 +185,11 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 				pDoc->SetupBoard(pDoc->GetRows(), pDoc->GetColumns());
 			}
 		}
-		pDoc->SetPreviousPoint(CPoint(row, col));
-		pDoc->SetPreviousColour(C);
+		//pDoc->SetPreviousPoint(CPoint(row, col));
+		//pDoc->SetPreviousColour(pDoc->GetCurrentColour());
 		pDoc->SetSecondChoice(false);
 		Invalidate();
 	}
-
 	CView::OnLButtonDown(nFlags, point);
 }
 

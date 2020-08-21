@@ -26,6 +26,8 @@ public:
 	void SetPreviousPoint(CPoint point) { previousPoint = point; }
 	CPoint GetCurrentPoint() { return currentPoint; }
 	void SetCurrentPoint(CPoint point) { currentPoint = point; }
+	COLORREF GetCurrentColour() { return currentColour; }
+	void SetCurrentColour(COLORREF colour) { currentColour = colour; }
 	bool GetSecondChoice() { return secondChoice; }
 	void SetSecondChoice(bool choice) { secondChoice = choice; }
 	bool GetAction() { return action; }
@@ -41,6 +43,7 @@ private:
 	std::vector<std::vector<int>> blockOnBoard;
 	COLORREF blockColours[9];
 	COLORREF previousColour;
+	COLORREF currentColour;
 	CPoint previousPoint;
 	bool secondChoice = false;
 	bool action = false;
