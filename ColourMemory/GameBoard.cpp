@@ -17,7 +17,6 @@ bRemaining(0)
 	blockColours[7] = RGB(255, 255, 0);
 	blockColours[8] = RGB(255, 222, 173);
 
-	//blockOnBoard.resize(3, std::vector<int>(4));
 	SetupBoard(3, 4);
 }
 
@@ -36,7 +35,6 @@ bRemaining(0)
 	blockColours[7] = RGB(255, 255, 0);
 	blockColours[8] = RGB(255, 222, 173);
 
-	//blockOnBoard.resize(R, std::vector<int>(C));
 	SetupBoard(R, C);
 }
 

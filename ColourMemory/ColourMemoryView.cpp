@@ -162,8 +162,15 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 
 	int row = point.y / pDoc->GetHeight();
 	int col = point.x / pDoc->GetWidth();
-	pDoc->SetCurrentPoint(CPoint(row, col));
-	pDoc->SetCurrentColour(pDoc->GetBoardSpace(row, col));
+
+	if (row == pDoc->GetPreviousPoint().y / pDoc->GetHeight() && col == pDoc->GetPreviousPoint().x / pDoc->GetWidth() && pDoc->GetSecondChoice() == true) {
+		pDoc->SetCurrentPoint(pDoc->GetPreviousPoint());
+		pDoc->SetCurrentColour(pDoc->GetPreviousColour());
+	}
+	else {
+		pDoc->SetCurrentPoint(CPoint(row, col));
+		pDoc->SetCurrentColour(pDoc->GetBoardSpace(row, col));
+	}
 
 	if (pDoc->GetSecondChoice() == false) {
 		pDoc->SetPreviousPoint(point);
@@ -173,7 +180,6 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 	}
 	else {
 		if (pDoc->GetBoardSpace(row, col) == pDoc->GetPreviousColour() && (row != (pDoc->GetPreviousPoint().y / pDoc->GetHeight()) || col != (pDoc->GetPreviousPoint().x / pDoc->GetWidth()))) {
-			
 			pDoc->DeleteBlocks(pDoc->GetCurrentColour());
 			UpdateWindow();
 			Invalidate();
@@ -185,11 +191,10 @@ void CColourMemoryView::OnLButtonDown(UINT nFlags, CPoint point) {
 				pDoc->SetupBoard(pDoc->GetRows(), pDoc->GetColumns());
 			}
 		}
-		//pDoc->SetPreviousPoint(CPoint(row, col));
-		//pDoc->SetPreviousColour(pDoc->GetCurrentColour());
 		pDoc->SetSecondChoice(false);
 		Invalidate();
 	}
+
 	CView::OnLButtonDown(nFlags, point);
 }
 
